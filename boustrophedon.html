@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Mélisande Cornet" />
+    <meta
+      name="description"
+      content="Experience ancient writing with my Boustrophedon text generator. Convert modern text into the alternating left-to-right and right-to-left pattern used in ancient scripts."
+    />
+    <title>Ancient Boustrophedon Scribe</title>
+    <style>
+      @keyframes parchmentAge {
+        0% {
+          filter: sepia(0.5);
+        }
+        50% {
+          filter: sepia(0.7);
+        }
+        100% {
+          filter: sepia(0.5);
+        }
+      }
+
+      @keyframes inkDrop {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+
+      @keyframes quillWrite {
+        0% {
+          transform: rotate(0deg) translateX(0);
+        }
+        25% {
+          transform: rotate(-5deg) translateX(5px);
+        }
+        75% {
+          transform: rotate(5deg) translateX(-5px);
+        }
+        100% {
+          transform: rotate(0deg) translateX(0);
+        }
+      }
+
+      @keyframes torchLight {
+        0% {
+          text-shadow: 2px 2px 4px #251b11, 0 0 15px #ff6b1a;
+        }
+        50% {
+          text-shadow: 2px 2px 4px #251b11, 0 0 25px #ff6b1a;
+        }
+        100% {
+          text-shadow: 2px 2px 4px #251b11, 0 0 15px #ff6b1a;
+        }
+      }
+
+      body {
+        background: url("https://www.transparenttextures.com/patterns/aged-paper.png"),
+          #d4c39c;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        padding: 20px;
+        text-align: center;
+        animation: parchmentAge 10s infinite;
+        color: #2c1810;
+      }
+
+      .header {
+        background: linear-gradient(45deg, #5c4033, #8b5a2b);
+        color: #f4d03f;
+        padding: 30px;
+        text-align: center;
+        border-radius: 10px;
+        border: 3px solid #2c1810;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20v20H0V0zm10 10l5-5H5l5 5z' fill='%23ffffff' fill-opacity='0.05'/%3E%3C/svg%3E");
+      }
+
+      .header h1 {
+        animation: torchLight 3s infinite;
+        font-size: 2.5em;
+        margin: 0;
+        font-variant: small-caps;
+        animation: float 3s ease-in-out infinite;
+        text-shadow: 2px 2px 4px #251b11;
+      }
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      .subtitle {
+        font-style: italic;
+        color: #deb887;
+        margin-top: 10px;
+      }
+
+      .main-content {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        margin: 30px auto;
+        max-width: 1200px;
+        gap: 30px;
+      }
+
+      .intro {
+        width: 40%;
+        padding: 2rem;
+        background: rgba(255, 245, 230, 0.9);
+        border: 2px solid #8b5a2b;
+        border-radius: 10px;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .container {
+        width: 52%;
+        padding: 2rem;
+        background: rgba(255, 245, 230, 0.9);
+        border: 2px solid #8b5a2b;
+        border-radius: 10px;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        font-size: 16px;
+        border: 2px solid #8b5a2b;
+        background: rgba(255, 250, 240, 0.8);
+        padding: 15px;
+        border-radius: 5px;
+        resize: vertical;
+        font-family: "Palatino Linotype", serif;
+        color: #2c1810;
+        transition: all 0.3s ease;
+      }
+
+      textarea:focus {
+        border-color: #5c4033;
+        box-shadow: 0 0 10px rgba(139, 90, 43, 0.3);
+        outline: none;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 12px 25px;
+        background: linear-gradient(45deg, #8b5a2b, #5c4033);
+        color: #f4d03f;
+        border: 2px solid #2c1810;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: "Palatino Linotype", serif;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      .output {
+        margin-top: 20px;
+        padding: 20px;
+        border: 2px solid #8b5a2b;
+        background: rgba(255, 250, 240, 0.8);
+        font-size: 18px;
+        white-space: pre-line;
+        border-radius: 5px;
+        position: relative;
+        min-height: 100px;
+      }
+
+      .ink-drop {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: #2c1810;
+        border-radius: 50%;
+        animation: inkDrop 1s forwards;
+      }
+
+      .quill {
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background: #2c1810;
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          flex-direction: column;
+        }
+        .intro,
+        .container {
+          width: 90%;
+          margin: 10px auto;
+        }
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        color: #5c4033;
+        font-style: italic;
+        border-top: 2px solid #8b5a2b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Boustrophedon Text Generator</h1>
+      <p class="subtitle">Ancient Writing Style Simulator</p>
+    </div>
+    <div class="main-content">
+      <div class="intro">
+        <h3>What is Boustrophedon</h3>
+        <p>
+          <strong>Boustrophedon</strong> (from Ancient Greek: βουστροφηδόν) is a
+          bi-directional text pattern where lines alternate between
+          left-to-right and right-to-left. The term literally means "as the ox
+          plows," referring to the pattern created by an ox turning at the end
+          of each row in a field.
+        </p>
+        <h3>How to use the simulator</h3>
+        <p>
+          Simply input your text and press Enter for each line break. Every
+          second line will be reversed, creating the distinctive ox-plowing
+          pattern. This simulator helps visualize how ancient texts were
+          written, alternating between left-to-right and right-to-left
+          directions.
+        </p>
+        <h3>Example</h3>
+        <p>
+          First line reads left to right <br />
+          tfel ot thgir sdaer enil dnoceS <br />
+          Third line reads left to right
+        </p>
+      </div>
+      <div class="container">
+        <h1>Boustrophedon Text Simulator</h1>
+        <textarea id="inputText" placeholder="Enter text here..."></textarea>
+        <button type="button" onclick="convertText()">
+          Convert to Ancient Script
+        </button>
+        <div class="output" id="outputText"></div>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2025 Mélisande Cornet. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // This script implements the boustrophedon text conversion and animation effects
+
+      // function reverseText(text)
+      function reverseText(text) {
+        // Reverse a string using array methods
+        return text.split("").reverse().join("");
+      }
+      // Creates an ink drop effect at the specified coordinates
+      function createInkDrop(x, y) {
+        // Create a new div element for the ink drop
+        const drop = document.createElement("div");
+        // Add the ink-drop CSS class for styling and animation
+        drop.className = "ink-drop";
+        // Position the ink drop at the specified coordinates
+        drop.style.left = x + "px";
+        drop.style.top = y + "px";
+        // Add the ink drop to the document body
+        document.body.appendChild(drop);
+        // Remove the ink drop after animation completes (1 second)
+        setTimeout(() => drop.remove(), 1000);
+      }
+
+      // Function to animate the writing of text character by character
+      function animateWriting(text, element) {
+        // Clear the output element
+        element.innerHTML = "";
+        // Split the text into array of lines
+        const lines = text.split("\n");
+        // Track current line and character position
+        let currentLine = 0;
+        let currentChar = 0;
+
+        // Create a quill element for writing animation
+        const quill = document.createElement("div");
+        quill.className = "quill";
+        element.appendChild(quill);
+
+        // Main function to write characters one at a time
+        function writeNextChar() {
+          // Check if we've finished all lines
+          if (currentLine >= lines.length) {
+            quill.style.display = "none"; // Hide the quill
+            return;
+          }
+
+          // Check if we've reached the end of current line
+          if (currentChar >= lines[currentLine].length) {
+            element.innerHTML += "\n"; // Add line break
+            currentLine++; // Move to next line
+            currentChar = 0; // Reset character position
+            // If there are more lines, schedule next character
+            if (currentLine < lines.length) {
+              setTimeout(writeNextChar, 100);
+            } else {
+              quill.style.display = "none"; // Hide quill when done
+            }
+            return;
+          }
+          // Get the current character from the current line
+          const char = lines[currentLine][currentChar];
+          // Append the character to the output element
+          element.innerHTML += char;
+
+          // Random ink drop effect
+          // Add random ink drops while writing (10% chance per character)
+          if (Math.random() < 0.1) {
+            // Get the bounding rectangle of the output element
+            const rect = element.getBoundingClientRect();
+            // Create ink drop at calculated position:
+            // X: offset from left based on current character (wraps around width)
+            // Y: offset from top based on current line number
+            createInkDrop(
+              rect.left + ((currentChar * 10) % rect.width),
+              rect.top + currentLine * 20
+            );
+          }
+
+          currentChar++;
+          setTimeout(writeNextChar, 50 + Math.random() * 50);
+        }
+
+        writeNextChar();
+      }
+
+      // Function to convert input text to boustrophedon format
+      function convertText() {
+        // Get the input text from textarea
+        const input = document.getElementById("inputText").value;
+        // Split the input into array of lines
+        const lines = input.split("\n");
+
+        // Process each line
+        for (let i = 0; i < lines.length; i++) {
+          // Reverse every odd-numbered line (index 1, 3, 5, etc.)
+          if (i % 2 === 1) {
+            lines[i] = reverseText(lines[i]);
+          }
+        }
+
+        // Join the lines back together with newlines
+        const outputText = lines.join("\n");
+        // Get the output element where text will be displayed
+        const outputElement = document.getElementById("outputText");
+        // Animate the writing of the converted text
+        animateWriting(outputText, outputElement);
+      }
+
+      // Add some ambient parchment aging effects
+      setInterval(() => {
+        const hue = Math.random() * 10 - 5;
+        document.body.style.filter = `sepia(0.5) hue-rotate(${hue}deg)`;
+      }, 5000);
+
+      // Add interactive ink drops on click
+      document.addEventListener("click", (e) => {
+        createInkDrop(e.pageX, e.pageY);
+      });
+    </script>
+  </body>
+</html>
